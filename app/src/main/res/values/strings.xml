@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">FirebaseAndroidExample</string>
+    <string name="title_activity_login">Sign in</string>
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="action_sign_up">Sign up</string>
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="lab_email">Email:</string>
+    <string name="lab_password">Password:</string>
+    <string name="lab_uid">UID:</string>
+    <string name="action_sign_out">Sign out</string>
+    <string name="facebook_app_id">827829200892472</string>
+    <string name="fb_login_protocol_scheme">fb827829200892472</string>
+    <string name="title_activity_add_artist">AddArtistActivity</string>
+    <string name="lab_add_artist">Add artist</string>
+    <string name="lab_artist_name">Artist name:</string>
+    <string name="lab_artist_genre">Artist genre:</string>
+    <string name="lab_update_artist">Update artist</string>
+    <string name="msg_remove_artist">Are you sure you want remove this artist?</string>
+
+</resources>
