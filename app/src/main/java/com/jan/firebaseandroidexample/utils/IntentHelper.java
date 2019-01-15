@@ -10,7 +10,7 @@ import com.jan.firebaseandroidexample.view.main.MainActivity;
 
 public class IntentHelper {
 
-    public final static String KEY_OBJECT_UPDATE_ARTIST = "KEY_OBJECT_UPDATE_ARTIST";
+    public final static String KEY_OBJECT_SAVE_ARTIST = "KEY_OBJECT_SAVE_ARTIST";
 
     public static void goToLoginActivity(Bundle extras, Activity fromActivity) {
         Intent intent = new Intent(fromActivity, LoginActivity.class);
