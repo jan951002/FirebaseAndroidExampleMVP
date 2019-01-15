@@ -23,20 +23,21 @@ public class ArtistViewHolder extends RecyclerView.ViewHolder {
         ButterKnife.bind(this, itemView);
     }
 
-    public void bind(Artist artist, ArtistsAdapter.OnItemClickListener listener) {
+    public void bind(Artist artist, ArtistsAdapter.OnItemClickListener listener, int position) {
         labArtistName.setText(artist.getName());
         labArtistGenre.setText(artist.getGenre());
         setOnClickListener(artist, listener);
-        setOnLongClickListener(artist, listener);
+        setOnLongClickListener(artist, listener, position);
     }
 
     private void setOnClickListener(final Artist artist, final ArtistsAdapter.OnItemClickListener listener) {
         itemView.setOnClickListener(view -> listener.onItemClick(artist));
     }
 
-    private void setOnLongClickListener(final Artist artist, final ArtistsAdapter.OnItemClickListener listener) {
+    private void setOnLongClickListener(final Artist artist, final ArtistsAdapter.OnItemClickListener listener,
+                                        final int position) {
         itemView.setOnLongClickListener(view -> {
-            listener.onItemLongClick(artist);
+            listener.onItemLongClick(artist, position);
             return true;
         });
     }

@@ -1,6 +1,8 @@
 package com.jan.firebaseandroidexample.view.saveartist;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -33,7 +35,7 @@ public class SaveArtistActivity extends AppCompatActivity implements SaveArtistC
         ButterKnife.bind(this);
         presenter = new SaveArtistPresenter();
         presenter.attachView(this);
-        Artist artist = (Artist) getIntent().getSerializableExtra(IntentHelper.KEY_OBJECT_UPDATE_ARTIST);
+        Artist artist = (Artist) getIntent().getSerializableExtra(IntentHelper.KEY_OBJECT_SAVE_ARTIST);
         if (artist != null) {
             btnSaveArtist.setText(getResources().getString(R.string.lab_update_artist));
             txtArtistGenre.setText(artist.getGenre());
@@ -45,6 +47,13 @@ public class SaveArtistActivity extends AppCompatActivity implements SaveArtistC
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        returnToMainActivity(false);
+
+    }
+
     @OnClick(R.id.btn_save_artist)
     public void addArtist(View view) {
         if (presenter.getCurrentArtist() == null) {
@@ -52,8 +61,20 @@ public class SaveArtistActivity extends AppCompatActivity implements SaveArtistC
         } else {
             presenter.updateArtist();
         }
-
+        returnToMainActivity(true);
         clearForm();
+    }
+
+    private void returnToMainActivity(boolean isSucceed) {
+        if (isSucceed) {
+            Intent returnIntent = new Intent();
+            setResult(Activity.RESULT_OK, returnIntent);
+            finish();
+        } else {
+            Intent returnIntent = new Intent();
+            setResult(Activity.RESULT_CANCELED, returnIntent);
+            finish();
+        }
     }
 
     @Override

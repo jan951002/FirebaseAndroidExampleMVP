@@ -31,7 +31,7 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ArtistViewHolder artistViewHolder, int i) {
-        artistViewHolder.bind(artists.get(i), listener);
+        artistViewHolder.bind(artists.get(i), listener, i);
     }
 
     @Override
@@ -61,9 +61,14 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistViewHolder> {
         notifyDataSetChanged();
     }
 
+    public void removeArtist(int position) {
+        artists.remove(position);
+        notifyDataSetChanged();
+    }
+
     interface OnItemClickListener {
         void onItemClick(Artist item);
 
-        void onItemLongClick(Artist item);
+        void onItemLongClick(Artist item, int position);
     }
 }
