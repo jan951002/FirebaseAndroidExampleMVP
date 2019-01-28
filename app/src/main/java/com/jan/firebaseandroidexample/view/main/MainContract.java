@@ -11,6 +11,8 @@ public interface MainContract {
 
         void showUserDetail();
 
+        void showGallery();
+
     }
 
     interface Presenter extends BasePresenter<View> {
@@ -18,6 +20,8 @@ public interface MainContract {
         void showArtistView();
 
         void showUserDetail();
+
+        void showGallery();
 
     }
 

@@ -10,6 +10,7 @@ import android.view.View;
 
 import com.jan.firebaseandroidexample.R;
 import com.jan.firebaseandroidexample.view.artistsview.ArtistsViewFragment;
+import com.jan.firebaseandroidexample.view.uploadphoto.UploadPhotoFragment;
 import com.jan.firebaseandroidexample.view.userdetail.UserDetailFragment;
 
 import java.util.Objects;
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     private ArtistsViewFragment artistsViewFragment;
     private UserDetailFragment userDetailFragment;
+    private UploadPhotoFragment uploadPhotoFragment;
     private MainContract.Presenter presenter;
 
     @Override
@@ -51,8 +53,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         FragmentTransaction t = getSupportFragmentManager().beginTransaction();
         t.replace(R.id.fragment_content, artistsViewFragment);
         t.commit();
-        Objects.requireNonNull(getSupportActionBar()).setTitle(getResources().getString(R.string.lab_artists));
+        Objects.requireNonNull(getSupportActionBar()).setTitle(getResources().getString(R.string.action_show_artists));
         userDetailFragment = null;
+        uploadPhotoFragment = null;
     }
 
     @Override
@@ -61,8 +64,20 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         FragmentTransaction t = getSupportFragmentManager().beginTransaction();
         t.replace(R.id.fragment_content, userDetailFragment);
         t.commit();
-        Objects.requireNonNull(getSupportActionBar()).setTitle(getResources().getString(R.string.lab_user));
+        Objects.requireNonNull(getSupportActionBar()).setTitle(getResources().getString(R.string.action_show_user));
         artistsViewFragment = null;
+        uploadPhotoFragment = null;
+    }
+
+    @Override
+    public void showGallery() {
+        uploadPhotoFragment = new UploadPhotoFragment();
+        FragmentTransaction t = getSupportFragmentManager().beginTransaction();
+        t.replace(R.id.fragment_content, uploadPhotoFragment);
+        t.commit();
+        Objects.requireNonNull(getSupportActionBar()).setTitle(getResources().getString(R.string.action_show_gallery));
+        artistsViewFragment = null;
+        userDetailFragment = null;
     }
 
     @Override
@@ -71,10 +86,13 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         if (artistsViewFragment != null) {
             artistsViewFragment.onActivityResult(requestCode, resultCode, data);
         }
+        if (uploadPhotoFragment != null) {
+            uploadPhotoFragment.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     @Optional
-    @OnClick({R.id.btn_show_user_detail, R.id.btn_show_artists})
+    @OnClick({R.id.btn_show_user_detail, R.id.btn_show_artists, R.id.btn_show_gallery})
     public void onclick(View view) {
         switch (view.getId()) {
             case R.id.btn_show_user_detail:
@@ -82,6 +100,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 break;
             case R.id.btn_show_artists:
                 presenter.showArtistView();
+                break;
+            case R.id.btn_show_gallery:
+                presenter.showGallery();
                 break;
         }
     }

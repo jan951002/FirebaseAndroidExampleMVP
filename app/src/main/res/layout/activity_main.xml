@@ -25,15 +25,22 @@
             android:id="@+id/btn_show_user_detail"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:text="@string/lab_user" />
+            android:layout_weight="0.33"
+            android:text="@string/action_show_user" />
 
         <Button
             android:id="@+id/btn_show_artists"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:text="@string/lab_artists" />
+            android:layout_weight="0.33"
+            android:text="@string/action_show_artists" />
+
+        <Button
+            android:id="@+id/btn_show_gallery"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.33"
+            android:text="@string/action_show_gallery" />
 
     </LinearLayout>
 

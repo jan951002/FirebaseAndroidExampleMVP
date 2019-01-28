@@ -91,7 +91,7 @@ public class ArtistsViewFragment extends Fragment implements ArtistsViewContract
     @OnClick(R.id.btn_go_to_add_artist)
     public void onClickGoToAddArtist(View view) {
         Intent intent = new Intent(getActivity(), SaveArtistActivity.class);
-        getActivity().startActivityForResult(intent, 1);
+        Objects.requireNonNull(getActivity()).startActivityForResult(intent, 1);
     }
 
     @Override

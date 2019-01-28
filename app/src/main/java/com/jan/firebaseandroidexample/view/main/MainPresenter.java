@@ -26,4 +26,9 @@ public class MainPresenter implements MainContract.Presenter {
     public void showUserDetail() {
         view.showUserDetail();
     }
+
+    @Override
+    public void showGallery() {
+        view.showGallery();
+    }
 }

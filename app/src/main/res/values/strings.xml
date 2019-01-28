@@ -30,7 +30,10 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="lab_user">User</string>
-    <string name="lab_artists">Artists</string>
+    <string name="action_show_user">User</string>
+    <string name="action_show_artists">Artists</string>
+    <string name="action_pick_from_gallery">Pick From Gallery</string>
+    <string name="action_pick_from_camera">Pick From Camera</string>
+    <string name="action_show_gallery">Gallery</string>
 
 </resources>
