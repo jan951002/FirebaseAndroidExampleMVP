@@ -1,4 +1,4 @@
-package com.jan.firebaseandroidexample.view.main;
+package com.jan.firebaseandroidexample.view.artistsview;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.jan.firebaseandroidexample.R;
 import com.jan.firebaseandroidexample.data.db.model.Artist;
+import com.jan.firebaseandroidexample.view.artistsview.ArtistsAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

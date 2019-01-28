@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -29,7 +30,7 @@ import butterknife.OnClick;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends Activity implements LoginContract.View {
+public class LoginActivity extends AppCompatActivity implements LoginContract.View {
 
     @BindView(R.id.txt_email)
     AutoCompleteTextView txtEmail;
@@ -46,7 +47,7 @@ public class LoginActivity extends Activity implements LoginContract.View {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-        FacebookSdk.sdkInitialize(getContext());
+        FacebookSdk.sdkInitialize(getApplicationContext());
         facebookCallbackManager = CallbackManager.Factory.create();
         presenter = new LoginPresenter();
         presenter.attachView(this);

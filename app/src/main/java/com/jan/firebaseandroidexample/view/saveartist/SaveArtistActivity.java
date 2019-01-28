@@ -69,12 +69,11 @@ public class SaveArtistActivity extends AppCompatActivity implements SaveArtistC
         if (isSucceed) {
             Intent returnIntent = new Intent();
             setResult(Activity.RESULT_OK, returnIntent);
-            finish();
         } else {
             Intent returnIntent = new Intent();
             setResult(Activity.RESULT_CANCELED, returnIntent);
-            finish();
         }
+        finish();
     }
 
     @Override

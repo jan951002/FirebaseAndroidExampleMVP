@@ -1,4 +1,4 @@
-package com.jan.firebaseandroidexample.view.main;
+package com.jan.firebaseandroidexample.view.artistsview;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
