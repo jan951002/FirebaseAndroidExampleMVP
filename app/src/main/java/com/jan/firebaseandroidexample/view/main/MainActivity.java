@@ -12,6 +12,8 @@ import com.jan.firebaseandroidexample.R;
 import com.jan.firebaseandroidexample.view.artistsview.ArtistsViewFragment;
 import com.jan.firebaseandroidexample.view.userdetail.UserDetailFragment;
 
+import java.util.Objects;
+
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Optional;
@@ -49,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         FragmentTransaction t = getSupportFragmentManager().beginTransaction();
         t.replace(R.id.fragment_content, artistsViewFragment);
         t.commit();
+        Objects.requireNonNull(getSupportActionBar()).setTitle(getResources().getString(R.string.lab_artists));
         userDetailFragment = null;
     }
 
@@ -58,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         FragmentTransaction t = getSupportFragmentManager().beginTransaction();
         t.replace(R.id.fragment_content, userDetailFragment);
         t.commit();
+        Objects.requireNonNull(getSupportActionBar()).setTitle(getResources().getString(R.string.lab_user));
         artistsViewFragment = null;
     }
 
