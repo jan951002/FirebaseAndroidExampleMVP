@@ -74,14 +74,15 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Optional
-    @OnClick(R.id.btn_show_user_detail)
-    public void goToShowUserDetail(View view) {
-        presenter.showUserDetail();
-    }
-
-    @Optional
-    @OnClick(R.id.btn_show_artists)
-    public void goToShowArtists(View view) {
-        presenter.showArtistView();
+    @OnClick({R.id.btn_show_user_detail, R.id.btn_show_artists})
+    public void onclick(View view) {
+        switch (view.getId()) {
+            case R.id.btn_show_user_detail:
+                presenter.showUserDetail();
+                break;
+            case R.id.btn_show_artists:
+                presenter.showArtistView();
+                break;
+        }
     }
 }
