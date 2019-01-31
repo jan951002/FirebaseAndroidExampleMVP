@@ -1,21 +1,33 @@
 package com.jan.firebaseandroidexample.view.uploadphoto;
 
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.jan.firebaseandroidexample.BuildConfig;
 import com.jan.firebaseandroidexample.R;
+import com.jan.firebaseandroidexample.utils.DateUtil;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Date;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -27,10 +39,13 @@ import butterknife.OnClick;
  */
 public class UploadPhotoFragment extends Fragment {
 
-    public static final int GALLERY_REQUEST_CODE = 101;
+    private static final int GALLERY_REQUEST_CODE = 101;
+    private static final int CAMERA_REQUEST_CODE = 102;
 
     @BindView(R.id.pick_img)
     ImageView imageView;
+
+    private String cameraFilePath;
 
     public UploadPhotoFragment() {
         // Required empty public constructor
@@ -56,6 +71,32 @@ public class UploadPhotoFragment extends Fragment {
         Objects.requireNonNull(getActivity()).startActivityForResult(intent, GALLERY_REQUEST_CODE);
     }
 
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = DateUtil.getFileDate(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DCIM), "Camera");
+        File image = File.createTempFile(
+                imageFileName,
+                ".jpg",
+                storageDir
+        );
+        cameraFilePath = "file://" + image.getAbsolutePath();
+        return image;
+    }
+
+    private void captureFromCamera() {
+        try {
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(Objects.requireNonNull(getContext()),
+                    BuildConfig.APPLICATION_ID + ".provider", createImageFile()));
+            Objects.requireNonNull(getActivity()).startActivityForResult(intent, CAMERA_REQUEST_CODE);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
     @OnClick({R.id.btn_pick_from_gallery, R.id.btn_pick_from_camera})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -64,6 +105,14 @@ public class UploadPhotoFragment extends Fragment {
                 break;
 
             case R.id.btn_pick_from_camera:
+                if (ContextCompat.checkSelfPermission(Objects.requireNonNull(getContext()),
+                        Manifest.permission.CAMERA)
+                        == PackageManager.PERMISSION_GRANTED &&
+                        ContextCompat.checkSelfPermission(Objects.requireNonNull(getContext()),
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                                == PackageManager.PERMISSION_GRANTED) {
+                    captureFromCamera();
+                }
                 break;
         }
     }
@@ -76,6 +125,9 @@ public class UploadPhotoFragment extends Fragment {
                 case GALLERY_REQUEST_CODE:
                     Uri selectedImage = data.getData();
                     imageView.setImageURI(selectedImage);
+                    break;
+                case CAMERA_REQUEST_CODE:
+                    imageView.setImageURI(Uri.parse(cameraFilePath));
                     break;
             }
     }

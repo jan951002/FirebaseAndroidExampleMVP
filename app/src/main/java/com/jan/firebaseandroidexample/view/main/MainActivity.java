@@ -1,9 +1,14 @@
 package com.jan.firebaseandroidexample.view.main;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -21,6 +26,10 @@ import butterknife.Optional;
 
 public class MainActivity extends AppCompatActivity implements MainContract.View {
 
+    private static final int PERMISSIONS_CODE = 201;
+    private static final int PERMISSION_CAMERA_CODE = 202;
+    private static final int PERMISSION_WRITE_EXTERNAL_STORAGE_CODE = 203;
+
     private ArtistsViewFragment artistsViewFragment;
     private UserDetailFragment userDetailFragment;
     private UploadPhotoFragment uploadPhotoFragment;
@@ -34,8 +43,87 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         presenter = new MainPresenter();
         presenter.attachView(this);
         presenter.showArtistView();
+        permissionsRequest();
     }
 
+    private void permissionsRequest() {
+        if (ContextCompat.checkSelfPermission(Objects.requireNonNull(getContext()),
+                Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_DENIED
+                && ContextCompat.checkSelfPermission(Objects.requireNonNull(getContext()),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_DENIED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    PERMISSIONS_CODE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case PERMISSIONS_CODE: {
+
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0) {
+                    if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(this,
+                                new String[]{Manifest.permission.CAMERA},
+                                PERMISSION_CAMERA_CODE);
+                    }
+                    if (grantResults[1] != PackageManager.PERMISSION_GRANTED) {
+
+                        ActivityCompat.requestPermissions(this,
+                                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                PERMISSION_WRITE_EXTERNAL_STORAGE_CODE);
+                    }
+                }
+                break;
+            }
+
+            case PERMISSION_CAMERA_CODE: {
+
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0) {
+                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        if (ContextCompat.checkSelfPermission(Objects.requireNonNull(getContext()),
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                                == PackageManager.PERMISSION_DENIED) {
+                            ActivityCompat.requestPermissions(this,
+                                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                    PERMISSION_WRITE_EXTERNAL_STORAGE_CODE);
+                        }
+                    } else {
+                        ActivityCompat.requestPermissions(this,
+                                new String[]{Manifest.permission.CAMERA},
+                                PERMISSION_CAMERA_CODE);
+                    }
+                }
+                break;
+            }
+            case PERMISSION_WRITE_EXTERNAL_STORAGE_CODE: {
+
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0) {
+                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        if (ContextCompat.checkSelfPermission(Objects.requireNonNull(getContext()),
+                                Manifest.permission.CAMERA)
+                                == PackageManager.PERMISSION_DENIED) {
+                            ActivityCompat.requestPermissions(this,
+                                    new String[]{Manifest.permission.CAMERA},
+                                    PERMISSION_CAMERA_CODE);
+                        }
+                    } else {
+                        ActivityCompat.requestPermissions(this,
+                                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                PERMISSION_WRITE_EXTERNAL_STORAGE_CODE);
+                    }
+                }
+                break;
+            }
+        }
+    }
 
     @Override
     public Context getContext() {
