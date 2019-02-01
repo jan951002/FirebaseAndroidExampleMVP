@@ -5,6 +5,8 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,10 +23,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.jan.firebaseandroidexample.BuildConfig;
 import com.jan.firebaseandroidexample.R;
 import com.jan.firebaseandroidexample.utils.DateUtil;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
@@ -37,7 +42,7 @@ import butterknife.OnClick;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class UploadPhotoFragment extends Fragment {
+public class UploadPhotoFragment extends Fragment implements UploadPhotoContract.View {
 
     private static final int GALLERY_REQUEST_CODE = 101;
     private static final int CAMERA_REQUEST_CODE = 102;
@@ -46,6 +51,7 @@ public class UploadPhotoFragment extends Fragment {
     ImageView imageView;
 
     private String cameraFilePath;
+    private UploadPhotoContract.Presenter presenter;
 
     public UploadPhotoFragment() {
         // Required empty public constructor
@@ -58,6 +64,8 @@ public class UploadPhotoFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_upload_photo, container, false);
         ButterKnife.bind(this, view);
+        presenter = new UploadPhotoPresenter();
+        presenter.attachView(this);
         return view;
     }
 
@@ -97,7 +105,7 @@ public class UploadPhotoFragment extends Fragment {
         }
     }
 
-    @OnClick({R.id.btn_pick_from_gallery, R.id.btn_pick_from_camera})
+    @OnClick({R.id.btn_pick_from_gallery, R.id.btn_pick_from_camera, R.id.btn_upload_photo})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_pick_from_gallery:
@@ -114,8 +122,24 @@ public class UploadPhotoFragment extends Fragment {
                     captureFromCamera();
                 }
                 break;
+
+            case R.id.btn_upload_photo:
+                uploadImage();
+                break;
         }
     }
+
+    private void uploadImage() {
+        imageView.setDrawingCacheEnabled(true);
+        imageView.buildDrawingCache();
+        Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+        presenter.uploadPhoto(data);
+
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -130,5 +154,10 @@ public class UploadPhotoFragment extends Fragment {
                     imageView.setImageURI(Uri.parse(cameraFilePath));
                     break;
             }
+    }
+
+    @Override
+    public void showMessage(int resStringId) {
+
     }
 }

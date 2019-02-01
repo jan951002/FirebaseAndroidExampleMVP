@@ -35,5 +35,6 @@
     <string name="action_pick_from_gallery">Pick From Gallery</string>
     <string name="action_pick_from_camera">Pick From Camera</string>
     <string name="action_show_gallery">Gallery</string>
+    <string name="action_upload_photo">Upload photo</string>
 
 </resources>
